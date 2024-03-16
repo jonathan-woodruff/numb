@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
-import SignIn from './components/SignIn';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import { RouterProvider, createBrowserRouter, Route, createRoutesFromElements } from 'react-router-dom';
 /*
 import React, { useState, useEffect } from 'react';
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers"
@@ -15,12 +17,18 @@ import { fetchExpenses, expenseByCategory } from './utils';
 import './App.css';
 */
 
-function App() {
-  return (
-    <>
-      <SignIn />
-    </>
-  );
-};
+const router = createBrowserRouter(createRoutesFromElements(
+  <>
+    <Route path='/' element={ <SignIn /> } />
+    <Route path='/sign-in' element={ <SignIn /> } />
+    <Route path='/sign-up' element={ <SignUp /> } />
+  </>
+));
 
-export default App;
+
+export default function App () {
+  return (
+    <RouterProvider router={ router } />
+  );
+}
+
