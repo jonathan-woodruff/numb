@@ -7,13 +7,13 @@ const passport = require("passport");
 const filename = "./data/users.json";
 const bcrypt = require("bcrypt");
 let users = require("../data/users.json");
-const { getUser } = require('../models/database');
+const { dbGetUser, dbAddUser, dbGetNewId } = require('../models/database');
 
 // Register New User:
 exports.createUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
   try {
-    const user = await getUser({ email: email });
+    const user = await dbGetUser(email);
     if (user) {
       console.log("User already exists!");
       return res.redirect("sign-in");
@@ -21,13 +21,10 @@ exports.createUser = async (req, res) => {
     // Hash password before storing in local DB:
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = { ...id, username, password: hashedPassword };
-
 
     // Store new user in local DB
-    await users.push(newUser);
-    await helper.writeJSONFile(filename, users);
-
+    const newId = dbGetNewId();
+    await dbAddUser(newId, firstName, lastName, email, hashedPassword);
 
     res.redirect("sign-in");
   } catch (err) {

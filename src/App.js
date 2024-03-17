@@ -22,6 +22,12 @@ import { fetchExpenses, expenseByCategory } from './utils';
 import './App.css';
 */
 
+// App config
+app.use(express.json()); //parse json requests into req.body
+app.use(express.urlencoded({ extended: true })); //helps to interact with forms
+// Import Passport config
+require('./app/passport');
+
 // Session Config
 const store = new session.MemoryStore();
 app.use(session({
